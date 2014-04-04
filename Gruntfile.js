@@ -45,6 +45,7 @@ module.exports = function(grunt) {
           dest: '22222222'
         },
         files: {
+          'source_file1': ['destination_file1'],
           'source_file2': ['destination_file2']
         },
       },

@@ -18,30 +18,31 @@ module.exports = function(grunt) {
     var exec = require('child_process').exec;
     var options = this.options({
       bin: 'svn',
-      execOpts: {},
-      delay: 50
+      execOpts: {}
     });
 
     var done = this.async();
-    var that = this;
-    setTimeout(function(){
+    var all_commands = '';
+    this.files.forEach(function(f) {
+      var source = f.orig.dest;
+      var target = f.orig.src;
+      var command = [ options.bin, 'copy', source, target].join(' ');
+      if (all_commands != '') {
+        all_commands = [all_commands, command].join(' && ');
+      } else {
+        all_commands = command;
+      }
+    });
+    
+    // build a task object, we do this so it's quicker to run and grunt will wait for us.
+    exec(all_commands, options.execOpts, function (error, stdout) {
+      grunt.log.write(stdout);
+      if (error !== null) {
+        grunt.log.error('\n#' + all_commands + "\n" + error);
+      }
+      done(true);
+    });
 
-      that.files.forEach(function(f) {
-        var source = f.orig.dest;
-        var target = f.orig.src;
-        var command = [ options.bin, 'copy', source, target].join(' ');
-        grunt.log.write('SVN copy: ' + source + ' >>> ' + target + '\n');
-
-        exec(command, options.execOpts, function (error, stdout) {
-          grunt.log.write(stdout);
-          if (error !== null) {
-            grunt.log.error('\n#' + command + "\n" + error);
-          }
-          done(true);
-        });
-      });
-
-    }, options.delay);
 
   });
 
