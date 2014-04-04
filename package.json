@@ -1,7 +1,7 @@
 {
   "name": "grunt-svn-copy",
   "description": "SVN copy command in grunt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/colmmcbarron/grunt-svn-copy",
   "author": {
     "name": "Colm McBarron",
