@@ -23,20 +23,24 @@ module.exports = function(grunt) {
 
     var done = this.async();
 
-    this.files.forEach(function(f) {
-      var source = f.orig.dest;
-      var target = f.orig.src;
-      var command = [ options.bin, 'copy', source, target].join(' ');
-      grunt.log.write('SVN copy: ' + source + ' >>> ' + target + '\n');
+    setTimeout(function(){
 
-      exec(command, options.execOpts, function (error, stdout) {
-        grunt.log.write(stdout);
-        if (error !== null) {
-          grunt.log.error('\n#' + command + "\n" + error);
-        }
-        done(true);
+      this.files.forEach(function(f) {
+        var source = f.orig.dest;
+        var target = f.orig.src;
+        var command = [ options.bin, 'copy', source, target].join(' ');
+        grunt.log.write('SVN copy: ' + source + ' >>> ' + target + '\n');
+
+        exec(command, options.execOpts, function (error, stdout) {
+          grunt.log.write(stdout);
+          if (error !== null) {
+            grunt.log.error('\n#' + command + "\n" + error);
+          }
+          done(true);
+        });
       });
-    });
+        
+    }, 5000);
 
   });
 
