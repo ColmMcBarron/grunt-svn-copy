@@ -18,14 +18,15 @@ module.exports = function(grunt) {
     var exec = require('child_process').exec;
     var options = this.options({
       bin: 'svn',
-      execOpts: {}
+      execOpts: {},
+      delay: 50
     });
 
     var done = this.async();
-
+    var that = this;
     setTimeout(function(){
 
-      this.files.forEach(function(f) {
+      that.files.forEach(function(f) {
         var source = f.orig.dest;
         var target = f.orig.src;
         var command = [ options.bin, 'copy', source, target].join(' ');
@@ -39,8 +40,8 @@ module.exports = function(grunt) {
           done(true);
         });
       });
-        
-    }, 5000);
+
+    }, options.delay);
 
   });
 
